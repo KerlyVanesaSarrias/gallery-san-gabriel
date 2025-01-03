@@ -1,12 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import { PlusIcon } from "@heroicons/react/16/solid";
+import { Button } from "./ui-elments/components";
 
 function App() {
   return (
-    <div className='bg-red-500 size-[300px]'>App</div>
+    <div className="font-">
+      <Button iconLeft={<PlusIcon className="size-5" />} color="primary" size="medium" label="Inicio" />
+      <Button iconLeft={<PlusIcon className="size-5" />} color="secondary" size="medium" label="Inicio" />
+      <Button iconLeft={<PlusIcon className="size-5" />} color="tertiary" size="medium" label="Inicio" />
+      <Button iconLeft={<PlusIcon className="size-5" />} color="tertiary" size="small" label="Inicio" />
+    </div>
   )
 }
 
-export default App
+export default App;
