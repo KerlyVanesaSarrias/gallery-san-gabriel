@@ -1,0 +1,27 @@
+.input {
+    @apply block w-full px-3 py-2 border rounded-md shadow-sm text-sm;
+}
+
+.input--error {
+    @apply border-red-500 focus:ring-red-500 focus:border-red-500 focus:outline-none;
+}
+
+.input--normal {
+    @apply border-gray-300 focus:ring-blue-500 focus:border-blue-800 focus:outline-none;
+}
+
+.label {
+    @apply block text-sm font-medium;
+}
+
+.label--error {
+    @apply text-red-500;
+}
+
+.label--normal {
+    @apply text-gray-700;
+}
+
+.errorMessage {
+    @apply text-red-500;
+}

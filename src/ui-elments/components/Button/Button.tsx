@@ -20,7 +20,7 @@ const Button: React.FC<ButtonProps> = ({
     ...restProps
 }) => {
     const buttonClasses = classNames(
-        'button',
+        'button',   
         {
             [`button-color--${color}`]: true,
             [`button-size--${size}`]: true,
