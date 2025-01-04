@@ -1,0 +1,9 @@
+.nav li {
+    @apply h-full content-center hover:!bg-blue-600;
+}
+
+.nav li.active {
+    @apply border-b-4 border-white;
+    background: #0000 linear-gradient(180deg, #f6faff00, #ffffff38) 0 0
+        no-repeat padding-box;
+}

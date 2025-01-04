@@ -1,12 +1,13 @@
 import { Outlet } from 'react-router-dom';
+import { Header } from '../Components';
 
-const GalleryLayout = () => {
+const GalleryModuleLayout = () => {
     return (
         <div className="flex flex-col">
-            <h1>Header categories</h1>
+            <Header />
             <Outlet />
         </div>
     );
 };
 
-export default GalleryLayout;
+export default GalleryModuleLayout;

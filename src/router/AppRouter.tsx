@@ -7,8 +7,7 @@ const AppRouter = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Navigate to={'/gallery'} />} />
-                <Route path="/gallery/*" element={<GalleryModuleRouter />} />
-                <Route path="/favorites" element={<h1>favorites</h1>} />
+                <Route path="/*" element={<GalleryModuleRouter />} />
                 <Route path="/login/*" element={<AuthModuleRouter />} />
                 <Route path="*" element={<h1>Page not found</h1>} />
             </Routes>
