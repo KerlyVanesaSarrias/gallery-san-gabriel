@@ -1,23 +1,23 @@
 .button {
-  @apply flex gap-1 rounded-md items-center;
+    @apply flex gap-1 rounded-md items-center h-fit;
 }
 
 .button-color--primary {
-  @apply bg-blue-700 hover:bg-blue-600 text-white;
+    @apply bg-blue-700 hover:bg-blue-600 text-white;
 }
 
 .button-color--secondary {
-  @apply bg-gray-200 hover:bg-gray-300 text-gray-700;
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-700;
 }
 
 .button-color--tertiary {
-  @apply bg-red-500 hover:bg-red-400 text-white;
+    @apply bg-red-500 hover:bg-red-400 text-white;
 }
 
 .button-size--medium {
-  @apply text-base px-4 py-2;
+    @apply text-base px-4 py-2;
 }
 
 .button-size--small {
-  @apply text-sm px-2 py-1 !rounded;
+    @apply text-sm px-2 py-1 !rounded;
 }

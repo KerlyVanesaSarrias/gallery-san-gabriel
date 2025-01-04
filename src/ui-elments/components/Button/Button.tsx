@@ -5,8 +5,8 @@ type ButtonColor = 'primary' | 'secondary' | 'tertiary';
 type ButtonSize = 'small' | 'medium';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    color: ButtonColor;
-    size: ButtonSize;
+    color?: ButtonColor;
+    size?: ButtonSize;
     label: string;
     iconLeft?: JSX.Element;
 }
@@ -20,7 +20,7 @@ const Button: React.FC<ButtonProps> = ({
     ...restProps
 }) => {
     const buttonClasses = classNames(
-        'button',   
+        'button',
         {
             [`button-color--${color}`]: true,
             [`button-size--${size}`]: true,
