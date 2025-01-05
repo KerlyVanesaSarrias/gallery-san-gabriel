@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useRef, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import './Input.tailwind.css';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/16/solid';
 
@@ -45,8 +45,9 @@ const Input: React.FC<InputProps> = ({
     );
 
     const errorClases = classNames('errorMessage');
+
     return (
-        <div>
+        <div className="relative w-full">
             <label htmlFor={name} className={labelClases}>
                 {label}
             </label>
@@ -78,4 +79,4 @@ const Input: React.FC<InputProps> = ({
     );
 };
 
-export default Input;
+export default memo(Input);

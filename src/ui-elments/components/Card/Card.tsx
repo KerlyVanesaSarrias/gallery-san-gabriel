@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 import './Card.tailwind.css';
 
 interface CardProps {
@@ -29,4 +29,4 @@ const Card = ({
     return <div className={cardClasses}>{children}</div>;
 };
 
-export default Card;
+export default memo(Card);

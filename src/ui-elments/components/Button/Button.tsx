@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import './Button.tailwind.css';
+import { memo } from 'react';
 
 type ButtonColor = 'primary' | 'secondary' | 'tertiary';
 type ButtonSize = 'small' | 'medium';
@@ -36,4 +37,4 @@ const Button: React.FC<ButtonProps> = ({
     );
 };
 
-export default Button;
+export default memo(Button);
