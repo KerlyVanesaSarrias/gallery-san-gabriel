@@ -8,16 +8,14 @@ interface HeaderProps {
     navItems: NavItem[];
 }
 const Header = ({ navItems }: HeaderProps) => {
-
     return (
         <div className="flex justify-between w-full h-16 bg-blue-700 px-8 items-center">
             <Logo />
             <div className="flex gap-4 h-full items-center">
                 <NavHeader navItems={navItems} />
-                <Link to = '/login'>
-                <Button color="secondary" label="Login"  />
+                <Link to="/login">
+                    <Button size="small" color="secondary" label="Login" />
                 </Link>
-                
             </div>
         </div>
     );

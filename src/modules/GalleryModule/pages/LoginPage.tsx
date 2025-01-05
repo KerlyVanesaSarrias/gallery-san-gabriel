@@ -12,7 +12,7 @@ import imageZero from '../../../assets/images/login-zero.jpg';
 import imageOne from '../../../assets/images/login-one.jpg';
 import imageTwo from '../../../assets/images/login-two.jpg';
 
-const Login = () => {
+const LoginPage = () => {
     const images = useMemo<CarouselImage[]>(() => {
         return [
             {
@@ -37,7 +37,7 @@ const Login = () => {
                     <Logo />
                 </div>
                 <Card noPadding className="h-full">
-                    <div className="flex flex-col sm:flex-row w-full h-full">
+                    <div className="flex flex-col sm:flex-row w-full h-full bg-white">
                         <div className="sm:w-1/2 flex flex-col items-center w-full p-10 justify-center">
                             <Text
                                 as="h1"
@@ -79,4 +79,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;
