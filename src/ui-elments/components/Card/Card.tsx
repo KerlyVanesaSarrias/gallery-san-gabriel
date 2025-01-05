@@ -22,7 +22,7 @@ const Card = ({
         {
             border: !noBorder,
             'p-4': !noPadding,
-            shadow: !noShadow,
+            'shadow-md': !noShadow,
         },
         className
     );

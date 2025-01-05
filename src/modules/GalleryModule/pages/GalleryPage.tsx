@@ -34,10 +34,16 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
     }
 
     return (
-        <div>
+        <div className="py-8 px-8 sm:px-14 md:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-50">
             {media.map((item) => {
-                const { thumbnail } = item;
-                return <ThumbnailMedia thumbnail={thumbnail} />;
+                const { thumbnail, type, id } = item;
+                return (
+                    <ThumbnailMedia
+                        key={id}
+                        thumbnail={thumbnail}
+                        type={type}
+                    />
+                );
             })}
         </div>
     );
