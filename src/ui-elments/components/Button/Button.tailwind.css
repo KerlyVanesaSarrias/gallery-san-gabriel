@@ -1,5 +1,5 @@
 .button {
-    @apply flex gap-1 rounded-md items-center h-fit;
+    @apply flex gap-1 rounded-md items-center h-fit justify-center;
 }
 
 .button-color--primary {

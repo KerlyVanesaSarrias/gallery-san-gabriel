@@ -12,13 +12,10 @@ interface NavHeaderProps {
 }
 const NavHeader = ({ navItems, subHeader = false }: NavHeaderProps) => {
     const location = useLocation();
-    const ulClasses = classNames(
-        'flex gap-2 text-white h-full items-center nav',
-        {
-            'text-white': !subHeader,
-            'text-black': subHeader,
-        }
-    );
+    const ulClasses = classNames('flex gap-2  h-full items-center nav', {
+        'text-white': !subHeader,
+        'text-black': subHeader,
+    });
 
     const liActiveClasses = classNames({
         active: !subHeader,
