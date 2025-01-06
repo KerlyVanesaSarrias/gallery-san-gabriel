@@ -11,6 +11,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     size?: ButtonSize;
     label: string;
     iconLeft?: JSX.Element;
+    iconRight?: JSX.Element;
     isLoading?: boolean;
 }
 
@@ -20,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
     label,
     className,
     iconLeft,
+    iconRight,
     isLoading = false,
     disabled,
     ...restProps
@@ -42,6 +44,7 @@ const Button: React.FC<ButtonProps> = ({
             {isLoading && <LoaderIcon />}
             {iconLeft}
             {label}
+            {iconRight}
         </button>
     );
 };

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Logo } from '../../../components';
 import {
     Button,
@@ -13,9 +13,11 @@ import imageOne from '../../../assets/images/login-one.jpg';
 import imageTwo from '../../../assets/images/login-two.jpg';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin } from '../slices/UserSlice/UserSlice';
+import { fetchLogin } from '../slices/UserSlice/userSlice';
 import { AppDispatch } from '../../../store';
 import { RootState } from '../../../store/index';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
     const images = useMemo<CarouselImage[]>(() => {
@@ -39,10 +41,32 @@ const LoginPage = () => {
     const { errors } = formState;
     const user = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
-    const login = (data: FieldValues) => {
-        dispatch(fetchLogin({ email: data.email, password: data.password }));
+    const login = async (data: FieldValues) => {
+        const result = await dispatch(
+            fetchLogin({ email: data.email, password: data.password })
+        ).unwrap();
+
+        if (result.succes) {
+            toast.success('Login successful', {
+                closeButton: true,
+                position: 'top-right',
+            });
+            navigate('/');
+        } else {
+            toast.error(user.error, {
+                closeButton: true,
+                position: 'top-right',
+            });
+        }
     };
+
+    useEffect(() => {
+        if (user.isAuthenticated) {
+            navigate('/');
+        }
+    }, [navigate, user.isAuthenticated]);
 
     return (
         <div className="relative w-full bg-gray-50 h-screen">
@@ -94,7 +118,6 @@ const LoginPage = () => {
                                     placeholder="Password"
                                     label="Password"
                                 />
-
                                 <Button
                                     type="submit"
                                     label="Log In"
@@ -102,15 +125,6 @@ const LoginPage = () => {
                                     size="medium"
                                     isLoading={user.isLoading}
                                 />
-                                {user.error && (
-                                    <Text
-                                        color="error"
-                                        className="text-center"
-                                        size="md"
-                                    >
-                                        {user.error}
-                                    </Text>
-                                )}
                             </form>
                         </div>
                         <div className="w-full sm:w-1/2 h-full bg-blue-800 flex items-center px-2 sm:px-8">

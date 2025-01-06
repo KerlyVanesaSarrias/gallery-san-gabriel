@@ -5,3 +5,4 @@ export { Text } from './Text';
 export { Carousel } from './Carousel';
 export { ThumbnailMedia } from './ThumbnailMedia';
 export { Checkbox } from './Checkbox';
+export { Dropdown } from './Dropdown';

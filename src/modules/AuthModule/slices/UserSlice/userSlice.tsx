@@ -1,8 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MediaItem } from '../../../GalleryModule/slices/GalerySlice/gallerySlice';
 import { USER } from '../../../GalleryModule/constants';
+import {
+    getUserAuthenticatedLS,
+    setUserAuthenticatedLS,
+} from '../../helpers/localStorageData';
 
-interface User {
+export interface User {
     email: string;
     name: string;
 }
@@ -16,8 +20,8 @@ interface UserState {
 }
 
 const initialState: UserState = {
-    user: null,
-    isAuthenticated: false,
+    user: getUserAuthenticatedLS(),
+    isAuthenticated: getUserAuthenticatedLS() ? true : false,
     isLoading: false,
     error: null,
     myFavoritesMedia: [],
@@ -36,15 +40,19 @@ interface LoginPayload {
 export const fetchLogin = createAsyncThunk<LoginResponse, LoginPayload>(
     'user/fetchLogin',
     async ({ email, password }) => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const timer = setTimeout(() => {
                 if (email === USER.email && password === USER.password) {
+                    setUserAuthenticatedLS({
+                        name: USER.name,
+                        email: USER.email,
+                    });
                     resolve({
                         succes: true,
                         user: { name: USER.name, email: USER.email },
                     });
                 } else {
-                    reject({ succes: false, user: null });
+                    resolve({ succes: false, user: null });
                 }
                 clearTimeout(timer);
             }, 800);
@@ -68,16 +76,12 @@ export const userSlice = createSlice({
                 (state, action: PayloadAction<LoginResponse>) => {
                     state.isLoading = false;
                     state.user = action.payload.user;
-                    state.isAuthenticated = true;
-                    state.error = null;
+                    state.isAuthenticated = action.payload.succes;
+                    state.error = action.payload.succes
+                        ? null
+                        : 'Invalid email or password';
                 }
-            )
-            .addCase(fetchLogin.rejected, (state, action) => {
-                state.isLoading = false;
-                state.user = null;
-                state.isAuthenticated = false;
-                state.error = action.error.message || 'Invalid credentials';
-            });
+            );
     },
 });
 

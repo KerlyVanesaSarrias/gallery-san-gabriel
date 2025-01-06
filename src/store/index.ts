@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { galleryReducer } from '../modules/GalleryModule/slices/GalerySlice/gallerySlice';
-import { userReducer } from '../modules/AuthModule/slices/UserSlice/UserSlice';
+import { userReducer } from '../modules/AuthModule/slices/UserSlice/userSlice';
 
 const store = configureStore({
     reducer: {
