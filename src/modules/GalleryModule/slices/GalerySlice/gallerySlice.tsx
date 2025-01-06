@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_KEY } from '../constants';
+import { API_KEY } from '../../constants';
 
-interface MediaItem {
+export interface MediaItem {
     id: string | number;
     type: 'image' | 'video';
     thumbnail: string;

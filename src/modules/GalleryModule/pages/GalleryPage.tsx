@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
 import { memo, useEffect } from 'react';
-import { fetchGallery } from '../slices/gallerySlice';
+import { fetchGallery } from '../slices/GalerySlice/gallerySlice';
 import { ThumbnailMedia } from '../../../ui-elments/components';
 import { Loader } from '../../../assets/images/Loader';
 

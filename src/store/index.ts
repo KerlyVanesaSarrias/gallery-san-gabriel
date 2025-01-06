@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { galleryReducer } from '../modules/GalleryModule/slices/gallerySlice';
+import { galleryReducer } from '../modules/GalleryModule/slices/GalerySlice/gallerySlice';
+import { userReducer } from '../modules/AuthModule/slices/UserSlice/UserSlice';
 
 const store = configureStore({
     reducer: {
         gallery: galleryReducer,
+        user: userReducer,
     },
 });
 
