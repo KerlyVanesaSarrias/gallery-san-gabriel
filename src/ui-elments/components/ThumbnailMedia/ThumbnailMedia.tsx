@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, MouseEvent } from 'react';
 import { Card } from '../Card';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
@@ -10,6 +10,7 @@ interface ThumbnailMediaProps {
     type: 'image' | 'video';
     isFavorite?: boolean;
     onFavoriteClick: (isFavorite: boolean) => void;
+    onClick?: () => void;
 }
 
 const ThumbnailMedia = ({
@@ -17,10 +18,20 @@ const ThumbnailMedia = ({
     type,
     isFavorite = false,
     onFavoriteClick,
+    onClick,
 }: ThumbnailMediaProps) => {
+    const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        onClick?.();
+    };
+
     return (
         <Card noPadding className="w-full aspect-video relative">
-            <div className="absolute inset-0 bg-black bg-opacity-10 hover:bg-opacity-25 transition-opacity duration-300 cursor-pointer">
+            <div
+                onClick={handleClick}
+                role="button"
+                className="absolute inset-0 bg-black bg-opacity-10 hover:bg-opacity-25 transition-opacity duration-300 cursor-pointer"
+            >
                 <Checkbox className="top-1 cursor-pointer left-1 absolute z-20" />
                 {isFavorite ? (
                     <button onClick={() => onFavoriteClick(false)}>

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import {
     fetchGallery,
     GalleryCategories,
@@ -11,18 +11,24 @@ import { Loader } from '../../../assets/images/Loader';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { userActions } from '../../AuthModule/slices/UserSlice/userSlice';
+import { PreviewModal } from '../Components';
 
 interface GalleryPageProps {
     category?: GalleryCategories;
 }
 
 const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
+    const [isOpenPreview, setIsOpenPreview] = useState(false);
     const { error, isLoading, media } = useSelector(
         (state: RootState) => state.gallery
     );
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
+
+    const handleTogglePreviewModal = () => {
+        setIsOpenPreview(!isOpenPreview);
+    };
 
     const handleFavoriteClick = (item: MediaItem) => (isFavorite: boolean) => {
         if (!user.isAuthenticated) {
@@ -66,9 +72,15 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                         type={type}
                         onFavoriteClick={handleFavoriteClick(item)}
                         isFavorite={isFavorite}
+                        onClick={handleTogglePreviewModal}
                     />
                 );
             })}
+            <PreviewModal
+                isOpen={isOpenPreview}
+                onClose={handleTogglePreviewModal}
+                title="Preview"
+            />
         </div>
     );
 };
