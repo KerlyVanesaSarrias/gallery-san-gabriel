@@ -70,23 +70,25 @@ const getVideos = async (category: string) => {
     );
 };
 
-export const fetchGallery = createAsyncThunk<MediaItem[], string | undefined>(
-    'gallery/fetchGallery',
-    async (category: string = 'all') => {
-        const [images, videos] = await Promise.all([
-            getImages(category),
-            getVideos(category),
-        ]);
-        const combined = [...images, ...videos];
+export type GalleryCategories = 'all' | 'animals' | 'music' | 'sports' | 'food';
 
-        for (let i = combined.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [combined[i], combined[j]] = [combined[j], combined[i]];
-        }
+export const fetchGallery = createAsyncThunk<
+    MediaItem[],
+    GalleryCategories | undefined
+>('gallery/fetchGallery', async (category: GalleryCategories = 'all') => {
+    const [images, videos] = await Promise.all([
+        getImages(category),
+        getVideos(category),
+    ]);
+    const combined = [...images, ...videos];
 
-        return combined;
+    for (let i = combined.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [combined[i], combined[j]] = [combined[j], combined[i]];
     }
-);
+
+    return combined;
+});
 
 const gallerySlice = createSlice({
     name: 'gallery',

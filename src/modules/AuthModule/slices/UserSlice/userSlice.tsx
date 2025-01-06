@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MediaItem } from '../../../GalleryModule/slices/GalerySlice/gallerySlice';
 import { USER } from '../../../GalleryModule/constants';
 import {
+    clearUserAuthenticatedLS,
     getUserAuthenticatedLS,
     setUserAuthenticatedLS,
 } from '../../helpers/localStorageData';
@@ -63,7 +64,16 @@ export const fetchLogin = createAsyncThunk<LoginResponse, LoginPayload>(
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        logout(state) {
+            clearUserAuthenticatedLS();
+            state.error = null;
+            state.isLoading = false;
+            state.isAuthenticated = false;
+            state.user = null;
+            state.myFavoritesMedia = [];
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchLogin.pending, (state) => {

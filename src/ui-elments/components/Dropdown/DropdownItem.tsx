@@ -5,14 +5,21 @@ export interface DropdownItemProps {
     id: string;
     label: string;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    isBold?: boolean;
 }
 
-const DropdownItem = ({ label, onClick, ...restProps }: DropdownItemProps) => {
+const DropdownItem = ({
+    label,
+    onClick,
+    isBold = false,
+    ...restProps
+}: DropdownItemProps) => {
     const buttonClasses = classNames(
         'block w-full px-4 py-2 text-left text-sm text-gray-700',
         {
             'hover:bg-blue-100': onClick,
             'cursor-default': !onClick,
+            'font-bold': isBold,
         }
     );
 

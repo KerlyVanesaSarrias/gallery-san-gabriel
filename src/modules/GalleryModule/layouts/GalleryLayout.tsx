@@ -15,6 +15,18 @@ const GalleryLayout = () => {
                 label: 'Animals',
                 path: GALLERY_CATEGORIES_PATHS.animals,
             },
+            {
+                label: 'Music',
+                path: GALLERY_CATEGORIES_PATHS.music,
+            },
+            {
+                label: 'Sports',
+                path: GALLERY_CATEGORIES_PATHS.sports,
+            },
+            {
+                label: 'Food',
+                path: GALLERY_CATEGORIES_PATHS.food,
+            },
         ];
     }, []);
 
