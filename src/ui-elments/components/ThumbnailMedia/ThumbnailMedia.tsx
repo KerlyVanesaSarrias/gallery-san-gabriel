@@ -1,4 +1,4 @@
-import { memo, MouseEvent } from 'react';
+import { ChangeEvent, memo, MouseEvent } from 'react';
 import { Card } from '../Card';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
@@ -25,6 +25,10 @@ const ThumbnailMedia = ({
         onClick?.();
     };
 
+    const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log(event);
+    };
+
     return (
         <Card noPadding className="w-full aspect-video relative">
             <div
@@ -32,13 +36,29 @@ const ThumbnailMedia = ({
                 role="button"
                 className="absolute inset-0 bg-black bg-opacity-10 hover:bg-opacity-25 transition-opacity duration-300 cursor-pointer"
             >
-                <Checkbox className="top-1 cursor-pointer left-1 absolute z-20" />
+                <Checkbox
+                    onChange={handleCheckboxChange}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }}
+                    className="top-1 cursor-pointer left-1 absolute z-20"
+                />
                 {isFavorite ? (
-                    <button onClick={() => onFavoriteClick(false)}>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onFavoriteClick(false);
+                        }}
+                    >
                         <HeartIconSolid className="size-5 absolute right-1 top-1 text-red-600 font-bold z-20 cursor-pointer" />
                     </button>
                 ) : (
-                    <button onClick={() => onFavoriteClick(true)}>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onFavoriteClick(true);
+                        }}
+                    >
                         <HeartIcon className="size-5 absolute right-1 top-1 text-white font-bold z-20 cursor-pointer" />
                     </button>
                 )}

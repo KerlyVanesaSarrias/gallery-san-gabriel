@@ -19,6 +19,8 @@ interface GalleryPageProps {
 
 const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
     const [isOpenPreview, setIsOpenPreview] = useState(false);
+    const [mediaPreview, setMediaPreview] = useState<MediaItem | null>(null);
+
     const { error, isLoading, media } = useSelector(
         (state: RootState) => state.gallery
     );
@@ -26,7 +28,12 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
     const user = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
 
-    const handleTogglePreviewModal = () => {
+    const handleTogglePreviewModal = (item?: MediaItem) => () => {
+        if (isOpenPreview === false && item) {
+            setMediaPreview(item);
+        } else {
+            setMediaPreview(null);
+        }
         setIsOpenPreview(!isOpenPreview);
     };
 
@@ -72,14 +79,16 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                         type={type}
                         onFavoriteClick={handleFavoriteClick(item)}
                         isFavorite={isFavorite}
-                        onClick={handleTogglePreviewModal}
+                        onClick={handleTogglePreviewModal(item)}
                     />
                 );
             })}
             <PreviewModal
                 isOpen={isOpenPreview}
-                onClose={handleTogglePreviewModal}
+                onClose={handleTogglePreviewModal()}
                 title="Preview"
+                type={mediaPreview?.type}
+                url={mediaPreview?.url}
             />
         </div>
     );
