@@ -20,11 +20,11 @@ const ThumbnailMedia = ({
 }: ThumbnailMediaProps) => {
     return (
         <Card noPadding className="w-full aspect-video relative">
-            <div className="absolute inset-0 bg-black bg-opacity-10 hover:bg-opacity-25 transition-opacity duration-300">
+            <div className="absolute inset-0 bg-black bg-opacity-10 hover:bg-opacity-25 transition-opacity duration-300 cursor-pointer">
                 <Checkbox className="top-1 cursor-pointer left-1 absolute z-20" />
                 {isFavorite ? (
                     <button onClick={() => onFavoriteClick(false)}>
-                        <HeartIconSolid className="size-5 absolute right-1 top-1 text-red-500 font-bold z-20 cursor-pointer" />
+                        <HeartIconSolid className="size-5 absolute right-1 top-1 text-red-600 font-bold z-20 cursor-pointer" />
                     </button>
                 ) : (
                     <button onClick={() => onFavoriteClick(true)}>
