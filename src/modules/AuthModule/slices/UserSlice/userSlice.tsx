@@ -3,7 +3,9 @@ import { MediaItem } from '../../../GalleryModule/slices/GalerySlice/gallerySlic
 import { USER } from '../../../GalleryModule/constants';
 import {
     clearUserAuthenticatedLS,
+    getFavotiresLS,
     getUserAuthenticatedLS,
+    setFavoritesLS,
     setUserAuthenticatedLS,
 } from '../../helpers/localStorageData';
 
@@ -25,11 +27,11 @@ const initialState: UserState = {
     isAuthenticated: getUserAuthenticatedLS() ? true : false,
     isLoading: false,
     error: null,
-    myFavoritesMedia: [],
+    myFavoritesMedia: getUserAuthenticatedLS() ? (getFavotiresLS() ?? []) : [],
 };
 
 interface LoginResponse {
-    succes: boolean;
+    success: boolean;
     user: User | null;
 }
 
@@ -49,11 +51,11 @@ export const fetchLogin = createAsyncThunk<LoginResponse, LoginPayload>(
                         email: USER.email,
                     });
                     resolve({
-                        succes: true,
+                        success: true,
                         user: { name: USER.name, email: USER.email },
                     });
                 } else {
-                    resolve({ succes: false, user: null });
+                    resolve({ success: false, user: null });
                 }
                 clearTimeout(timer);
             }, 800);
@@ -73,6 +75,22 @@ export const userSlice = createSlice({
             state.user = null;
             state.myFavoritesMedia = [];
         },
+        setFavoritesMedia(
+            state,
+            action: PayloadAction<{ isFavorite: boolean; media: MediaItem }>
+        ) {
+            const { isFavorite, media } = action.payload;
+            if (isFavorite) {
+                state.myFavoritesMedia.push(media);
+            } else {
+                state.myFavoritesMedia = state.myFavoritesMedia.filter(
+                    (item) => {
+                        return item.id !== media.id;
+                    }
+                );
+            }
+            setFavoritesLS(state.myFavoritesMedia);
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -86,10 +104,13 @@ export const userSlice = createSlice({
                 (state, action: PayloadAction<LoginResponse>) => {
                     state.isLoading = false;
                     state.user = action.payload.user;
-                    state.isAuthenticated = action.payload.succes;
-                    state.error = action.payload.succes
+                    state.isAuthenticated = action.payload.success;
+                    state.error = action.payload.success
                         ? null
                         : 'Invalid email or password';
+                    state.myFavoritesMedia = action.payload.success
+                        ? getFavotiresLS()
+                        : [];
                 }
             );
     },

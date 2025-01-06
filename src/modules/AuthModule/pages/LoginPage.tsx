@@ -48,7 +48,7 @@ const LoginPage = () => {
             fetchLogin({ email: data.email, password: data.password })
         ).unwrap();
 
-        if (result.succes) {
+        if (result.success) {
             toast.success('Login successful', {
                 closeButton: true,
                 position: 'top-right',
