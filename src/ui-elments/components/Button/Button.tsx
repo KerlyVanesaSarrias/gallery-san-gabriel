@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import './Button.tailwind.css';
 import { memo } from 'react';
+import { LoaderIcon } from './LoaderIcon';
 
 type ButtonColor = 'primary' | 'secondary' | 'tertiary';
 type ButtonSize = 'small' | 'medium';
@@ -10,6 +11,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     size?: ButtonSize;
     label: string;
     iconLeft?: JSX.Element;
+    isLoading?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,6 +20,8 @@ const Button: React.FC<ButtonProps> = ({
     label,
     className,
     iconLeft,
+    isLoading = false,
+    disabled,
     ...restProps
 }) => {
     const buttonClasses = classNames(
@@ -30,7 +34,12 @@ const Button: React.FC<ButtonProps> = ({
     );
 
     return (
-        <button className={buttonClasses} {...restProps}>
+        <button
+            className={buttonClasses}
+            disabled={isLoading || disabled}
+            {...restProps}
+        >
+            {isLoading && <LoaderIcon />}
             {iconLeft}
             {label}
         </button>

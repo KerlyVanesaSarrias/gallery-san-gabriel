@@ -100,9 +100,16 @@ const LoginPage = () => {
                                     label="Log In"
                                     color="primary"
                                     size="medium"
+                                    isLoading={user.isLoading}
                                 />
                                 {user.error && (
-                                    <Text color="error">{user.error}</Text>
+                                    <Text
+                                        color="error"
+                                        className="text-center"
+                                        size="md"
+                                    >
+                                        {user.error}
+                                    </Text>
                                 )}
                             </form>
                         </div>

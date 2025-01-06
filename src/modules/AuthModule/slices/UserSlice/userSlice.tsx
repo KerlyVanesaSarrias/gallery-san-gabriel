@@ -36,7 +36,7 @@ interface LoginPayload {
 export const fetchLogin = createAsyncThunk<LoginResponse, LoginPayload>(
     'user/fetchLogin',
     async ({ email, password }) => {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const timer = setTimeout(() => {
                 if (email === USER.email && password === USER.password) {
                     resolve({
@@ -44,10 +44,10 @@ export const fetchLogin = createAsyncThunk<LoginResponse, LoginPayload>(
                         user: { name: USER.name, email: USER.email },
                     });
                 } else {
-                    resolve({ succes: false, user: null });
+                    reject({ succes: false, user: null });
                 }
                 clearTimeout(timer);
-            });
+            }, 800);
         });
     }
 );
@@ -76,7 +76,7 @@ export const userSlice = createSlice({
                 state.isLoading = false;
                 state.user = null;
                 state.isAuthenticated = false;
-                state.error = action.error.message || 'Something went wrong';
+                state.error = action.error.message || 'Invalid credentials';
             });
     },
 });
