@@ -1,5 +1,9 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect, useCallback } from 'react';
 import { Modal } from '../../../../ui-elments/components';
+import {
+    MagnifyingGlassPlusIcon,
+    MagnifyingGlassMinusIcon,
+} from '@heroicons/react/24/solid';
 
 interface PreviewModalProps {
     isOpen: boolean;
@@ -8,6 +12,7 @@ interface PreviewModalProps {
     type?: 'image' | 'video';
     url?: string;
 }
+
 const PreviewModal = ({
     isOpen,
     title,
@@ -15,50 +20,68 @@ const PreviewModal = ({
     type,
     url,
 }: PreviewModalProps) => {
-    const [zoom, setZoom] = useState(1);
+    const [isZoomed, setIsZoomed] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [dragging, setDragging] = useState(false);
-    const [startDrag, setStartDrag] = useState({ x: 0, y: 0 });
+    const [containerRect, setContainerRect] = useState<DOMRect | null>(null);
 
-    const handleZoomIn = () => {
-        setZoom((prevZoom) => Math.min(prevZoom + 0.5, 10));
-    };
+    useEffect(() => {
+        if (!isOpen) {
+            setIsZoomed(false);
+            setPosition({ x: 0, y: 0 });
+        }
+    }, [isOpen]);
 
-    const handleZoomOut = () => {
-        setZoom((prevZoom) => Math.max(prevZoom - 0.5, 1));
-    };
-
-    const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-        setDragging(true);
-        setStartDrag({
-            x: event.clientX - position.x,
-            y: event.clientY - position.y,
-        });
-    };
-
-    const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-        if (dragging) {
-            setPosition({
-                x: event.clientX - startDrag.x,
-                y: event.clientY - startDrag.y,
-            });
+    const handleZoomToggle = () => {
+        setIsZoomed((prevZoom) => !prevZoom);
+        if (isZoomed) {
+            setPosition({ x: 0, y: 0 });
         }
     };
 
-    const handleMouseUp = () => {
-        setDragging(false);
+    const handleMouseMove = useCallback(
+        (event: MouseEvent) => {
+            if (isZoomed && containerRect) {
+                const offsetX =
+                    ((event.clientX - containerRect.left) /
+                        containerRect.width) *
+                        2 -
+                    1;
+                const offsetY =
+                    ((event.clientY - containerRect.top) /
+                        containerRect.height) *
+                        2 -
+                    1;
+                setPosition({
+                    x: -offsetX * 150,
+                    y: -offsetY * 150,
+                });
+            }
+        },
+        [containerRect, isZoomed]
+    );
+
+    const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
+        setContainerRect(event.currentTarget.getBoundingClientRect());
     };
+
+    useEffect(() => {
+        if (isZoomed) {
+            document.addEventListener('mousemove', handleMouseMove);
+        } else {
+            document.removeEventListener('mousemove', handleMouseMove);
+        }
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, [isZoomed, containerRect, handleMouseMove]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={title}>
-            <div className="md:w-[800px] w-full h-full relative flex flex-col items-center justify-center overflow-hidden">
+            <div className="md:w-[800px] h-full w-full relative flex flex-col items-center justify-center overflow-hidden">
                 {type === 'image' && (
                     <div
-                        className="relative cursor-grab active:cursor-grabbing"
-                        onMouseDown={handleMouseDown}
-                        onMouseMove={handleMouseMove}
-                        onMouseUp={handleMouseUp}
-                        onMouseLeave={handleMouseUp}
+                        className="relative flex items-center justify-center"
+                        onMouseEnter={handleMouseEnter}
                         style={{
                             width: '100%',
                             height: '100%',
@@ -68,26 +91,24 @@ const PreviewModal = ({
                         <img
                             src={url}
                             alt="preview modal"
-                            className="transition-transform duration-300"
+                            className="transition-transform duration-300 h-full"
                             style={{
-                                transform: `scale(${zoom}) translate(${position.x}px, ${position.y}px)`,
-                                cursor: dragging ? 'grabbing' : 'grab',
+                                transform: isZoomed
+                                    ? `scale(2) translate(${position.x}px, ${position.y}px)`
+                                    : 'scale(1)',
+                                cursor: isZoomed ? 'move' : 'default',
                             }}
                         />
-                        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                            <button
-                                onClick={handleZoomOut}
-                                className="px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
-                            >
-                                -
-                            </button>
-                            <button
-                                onClick={handleZoomIn}
-                                className="px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
-                            >
-                                +
-                            </button>
-                        </div>
+                        <button
+                            onClick={handleZoomToggle}
+                            className="absolute top-4 right-4 bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700"
+                        >
+                            {isZoomed ? (
+                                <MagnifyingGlassMinusIcon className="h-6 w-6" />
+                            ) : (
+                                <MagnifyingGlassPlusIcon className="h-6 w-6" />
+                            )}
+                        </button>
                     </div>
                 )}
             </div>
