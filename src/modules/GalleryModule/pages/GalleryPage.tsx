@@ -3,15 +3,17 @@ import { AppDispatch, RootState } from '../../../store';
 import { memo, useEffect, useState } from 'react';
 import {
     fetchGallery,
+    galleryActions,
     GalleryCategories,
     MediaItem,
 } from '../slices/GalerySlice/gallerySlice';
-import { ThumbnailMedia } from '../../../ui-elments/components';
+import { Button, Input, ThumbnailMedia } from '../../../ui-elments/components';
 import { Loader } from '../../../assets/images/Loader';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { userActions } from '../../AuthModule/slices/UserSlice/userSlice';
-import { PreviewModal } from '../Components';
+import { PresentationModal, PreviewModal } from '../Components';
+import { PlayIcon } from '@heroicons/react/16/solid';
 
 interface GalleryPageProps {
     category?: GalleryCategories;
@@ -19,11 +21,14 @@ interface GalleryPageProps {
 
 const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
     const [isOpenPreview, setIsOpenPreview] = useState(false);
+    const [isOpenPresentation, setIsOpenPresentation] = useState(false);
     const [mediaPreview, setMediaPreview] = useState<MediaItem | null>(null);
+    const [speedValue, setSpeedValue] = useState('3');
 
-    const { error, isLoading, media } = useSelector(
+    const { error, isLoading, media, selectedMedia } = useSelector(
         (state: RootState) => state.gallery
     );
+
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
@@ -36,6 +41,20 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
         }
         setIsOpenPreview(!isOpenPreview);
     };
+
+    const handleTogglePresentationModal = () => {
+        setIsOpenPresentation(!isOpenPresentation);
+    };
+
+    const handleCheckboxChange =
+        (mediaItem: MediaItem) => (isChecked: boolean) => {
+            dispatch(
+                galleryActions.toggleMediaSelection({
+                    isChecked,
+                    media: mediaItem,
+                })
+            );
+        };
 
     const handleFavoriteClick = (item: MediaItem) => (isFavorite: boolean) => {
         if (!user.isAuthenticated) {
@@ -65,31 +84,62 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
     }
 
     return (
-        <div className="py-8 px-8 sm:px-14 md:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-50">
-            {media.map((item) => {
-                const { thumbnail, type, id } = item;
-                const isFavorite = user.myFavoritesMedia.some(
-                    (item) => item.id === id
-                );
-
-                return (
-                    <ThumbnailMedia
-                        key={id}
-                        thumbnail={thumbnail}
-                        type={type}
-                        onFavoriteClick={handleFavoriteClick(item)}
-                        isFavorite={isFavorite}
-                        onClick={handleTogglePreviewModal(item)}
+        <div className="w-full h-full flex flex-col py-8 px-8 sm:px-14 md:px-16 gap-4">
+            {selectedMedia.length > 0 && (
+                <div className="flex gap-2 items-end">
+                    <div className="w-28">
+                        <Input
+                            type="number"
+                            label="Speed in sg"
+                            value={speedValue}
+                            onChange={(e) => setSpeedValue(e.target.value)}
+                        />
+                    </div>
+                    <Button
+                        iconLeft={<PlayIcon className="size-6" />}
+                        label="Presentation"
+                        onClick={handleTogglePresentationModal}
                     />
-                );
-            })}
-            <PreviewModal
-                isOpen={isOpenPreview}
-                onClose={handleTogglePreviewModal()}
-                title="Preview"
-                type={mediaPreview?.type}
-                url={mediaPreview?.url}
-            />
+                </div>
+            )}
+
+            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-50">
+                {media.map((item) => {
+                    const { thumbnail, type, id } = item;
+                    const isFavorite = user.myFavoritesMedia.some(
+                        (item) => item.id === id
+                    );
+
+                    return (
+                        <ThumbnailMedia
+                            key={id}
+                            thumbnail={thumbnail}
+                            type={type}
+                            onFavoriteClick={handleFavoriteClick(item)}
+                            onCheckboxChange={handleCheckboxChange(item)}
+                            isFavorite={isFavorite}
+                            onClick={handleTogglePreviewModal(item)}
+                        />
+                    );
+                })}
+                <PreviewModal
+                    isOpen={isOpenPreview}
+                    onClose={handleTogglePreviewModal()}
+                    title="Preview"
+                    type={mediaPreview?.type}
+                    url={mediaPreview?.url}
+                />
+                <PresentationModal
+                    isOpen={isOpenPresentation}
+                    onClose={handleTogglePresentationModal}
+                    title="Presentation"
+                    items={selectedMedia.map((item) => ({
+                        type: item.type,
+                        url: item.url,
+                    }))}
+                    autoPlaySpeed={Number(speedValue) * 1000}
+                />
+            </div>
         </div>
     );
 };

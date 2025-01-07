@@ -5,6 +5,7 @@ import { GALLERY_CATEGORIES_PATHS } from '../constants';
 import GalleryPage from '../pages/GalleryPage';
 import FavoritesPage from '../pages/FavoritesPage';
 import { ProtectedRoute } from '../../../components';
+import PageError from '../../../components/PageError/PageError';
 
 const GalleryModuleRouter = () => {
     return (
@@ -31,7 +32,7 @@ const GalleryModuleRouter = () => {
                         path={GALLERY_CATEGORIES_PATHS.food}
                         element={<GalleryPage category="food" />}
                     />
-                    <Route path="*" element={<h1>Page not found</h1>} />
+                    <Route path="*" element={<PageError />} />
                 </Route>
                 <Route
                     path="/favorites"

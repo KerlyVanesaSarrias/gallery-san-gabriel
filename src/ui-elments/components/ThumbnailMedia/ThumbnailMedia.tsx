@@ -11,6 +11,7 @@ interface ThumbnailMediaProps {
     isFavorite?: boolean;
     onFavoriteClick: (isFavorite: boolean) => void;
     onClick?: () => void;
+    onCheckboxChange: (isChecked: boolean) => void;
 }
 
 const ThumbnailMedia = ({
@@ -19,6 +20,7 @@ const ThumbnailMedia = ({
     isFavorite = false,
     onFavoriteClick,
     onClick,
+    onCheckboxChange,
 }: ThumbnailMediaProps) => {
     const handleClick = (event: MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
@@ -26,7 +28,7 @@ const ThumbnailMedia = ({
     };
 
     const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-        console.log(event);
+        onCheckboxChange(event.target.checked);
     };
 
     return (

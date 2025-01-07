@@ -13,6 +13,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     iconLeft?: JSX.Element;
     iconRight?: JSX.Element;
     isLoading?: boolean;
+    isFullWidth?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -24,6 +25,7 @@ const Button: React.FC<ButtonProps> = ({
     iconRight,
     isLoading = false,
     disabled,
+    isFullWidth = false,
     ...restProps
 }) => {
     const buttonClasses = classNames(
@@ -31,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
         {
             [`button-color--${color}`]: true,
             [`button-size--${size}`]: true,
+            'w-fit': !isFullWidth,
         },
         className
     );

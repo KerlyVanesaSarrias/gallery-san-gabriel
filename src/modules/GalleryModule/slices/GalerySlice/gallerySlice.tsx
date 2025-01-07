@@ -13,12 +13,14 @@ interface GalleryState {
     media: MediaItem[];
     isLoading: boolean;
     error: string | null;
+    selectedMedia: MediaItem[];
 }
 
 const initialState: GalleryState = {
     media: [],
     isLoading: false,
     error: null,
+    selectedMedia: [],
 };
 
 type DataResponseItem = {
@@ -93,7 +95,22 @@ export const fetchGallery = createAsyncThunk<
 const gallerySlice = createSlice({
     name: 'gallery',
     initialState,
-    reducers: {},
+    reducers: {
+        toggleMediaSelection: (
+            state,
+            action: PayloadAction<{ isChecked: boolean; media: MediaItem }>
+        ) => {
+            const { isChecked, media } = action.payload;
+
+            if (isChecked) {
+                state.selectedMedia.push(media);
+            } else {
+                state.selectedMedia = state.selectedMedia.filter(
+                    (item) => item.id !== media.id
+                );
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchGallery.pending, (state) => {
