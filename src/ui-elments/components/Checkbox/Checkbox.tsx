@@ -23,7 +23,7 @@ const Checkbox = ({
     });
 
     const inputClasses = classNames(
-        'h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 transition',
+        ' rounded border-gray-300 text-slate-600 focus:ring-2 focus:ring-slate-500 transition',
         {
             'opacity-50 cursor-not-allowed': disabled,
         }

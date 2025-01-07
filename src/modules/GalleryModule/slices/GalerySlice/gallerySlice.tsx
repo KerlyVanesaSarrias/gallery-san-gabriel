@@ -7,6 +7,8 @@ export interface MediaItem {
     type: 'image' | 'video';
     thumbnail: string;
     url: string;
+    userName?: string;
+    userUrl?: string;
 }
 
 interface GalleryState {
@@ -27,6 +29,8 @@ type DataResponseItem = {
     id: string | number;
     webformatURL: string;
     largeImageURL: string;
+    userImageURL: string;
+    user: string;
 };
 
 type DataResponseVideo = {
@@ -34,6 +38,8 @@ type DataResponseVideo = {
     videos: {
         large: { url: string; thumbnail: string };
     };
+    userImageURL: string;
+    user: string;
 };
 
 const getImages = async (category: string) => {
@@ -50,6 +56,8 @@ const getImages = async (category: string) => {
                 type: 'image',
                 thumbnail: item.webformatURL,
                 url: item.largeImageURL,
+                userUrl: item.userImageURL,
+                userName: item.user,
             }) as MediaItem
     );
 };
@@ -68,6 +76,8 @@ const getVideos = async (category: string) => {
                 type: 'video',
                 thumbnail: item.videos.large.thumbnail,
                 url: item.videos.large.url,
+                userUrl: item.userImageURL,
+                userName: item.user,
             }) as MediaItem
     );
 };

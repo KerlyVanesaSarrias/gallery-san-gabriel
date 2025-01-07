@@ -71,7 +71,7 @@ const LoginPage = () => {
     return (
         <div className="relative w-full bg-gray-50 h-screen">
             <div className="flex flex-col p-8 md:px-24 h-full">
-                <div className="w-24 brightness-0 mb-4">
+                <div className="w-40 brightness-0 mb-4">
                     <Logo />
                 </div>
                 <Card noPadding className="h-full">
@@ -79,7 +79,7 @@ const LoginPage = () => {
                         <div className="sm:w-1/2 flex flex-col items-center w-full p-10 justify-center">
                             <Text
                                 as="h1"
-                                size={'md'}
+                                size={'lg'}
                                 weight="medium"
                                 className="mb-4"
                             >
@@ -124,10 +124,11 @@ const LoginPage = () => {
                                     color="primary"
                                     size="medium"
                                     isLoading={user.isLoading}
+                                    isFullWidth={true}
                                 />
                             </form>
                         </div>
-                        <div className="w-full sm:w-1/2 h-full bg-blue-800 flex items-center px-2 sm:px-8">
+                        <div className="w-full sm:w-1/2 h-full  bg-slate-900 flex items-center ">
                             <Carousel images={images} enableAutoplay />
                         </div>
                     </div>

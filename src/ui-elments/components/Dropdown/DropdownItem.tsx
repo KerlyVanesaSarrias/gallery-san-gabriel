@@ -17,7 +17,7 @@ const DropdownItem = ({
     const buttonClasses = classNames(
         'block w-full px-4 py-2 text-left text-sm text-gray-700',
         {
-            'hover:bg-blue-100': onClick,
+            'hover:bg-gray-200': onClick,
             'cursor-default': !onClick,
             'font-bold': isBold,
         }

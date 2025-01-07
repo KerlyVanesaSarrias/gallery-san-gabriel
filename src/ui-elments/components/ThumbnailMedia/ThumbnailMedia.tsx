@@ -1,9 +1,9 @@
 import { ChangeEvent, memo, MouseEvent } from 'react';
 import { Card } from '../Card';
-import { HeartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import { Checkbox } from '../Checkbox';
 import { PlayCircleIcon } from '@heroicons/react/16/solid';
+import { HeartIcon } from '@heroicons/react/24/outline';
 
 interface ThumbnailMediaProps {
     thumbnail: string;
@@ -43,7 +43,7 @@ const ThumbnailMedia = ({
                     onClick={(e) => {
                         e.stopPropagation();
                     }}
-                    className="top-1 cursor-pointer left-1 absolute z-20"
+                    className="top-2 w-4 h-4 cursor-pointer left-2 absolute z-20 shadow-sm shadow-black"
                 />
                 {isFavorite ? (
                     <button
@@ -52,7 +52,7 @@ const ThumbnailMedia = ({
                             onFavoriteClick(false);
                         }}
                     >
-                        <HeartIconSolid className="size-5 absolute right-1 top-1 text-red-600 font-bold z-20 cursor-pointer" />
+                        <HeartIconSolid className="size-7 hover:size-8 absolute right-1 top-1  text-red-600 font-bold z-20 cursor-pointer" />
                     </button>
                 ) : (
                     <button
@@ -61,7 +61,7 @@ const ThumbnailMedia = ({
                             onFavoriteClick(true);
                         }}
                     >
-                        <HeartIcon className="size-5 absolute right-1 top-1 text-white font-bold z-20 cursor-pointer" />
+                        <HeartIcon className="size-7 hover:size-8 absolute right-1 top-1 text-white font-extrabold z-20 cursor-pointer" />
                     </button>
                 )}
                 {type === 'video' && (

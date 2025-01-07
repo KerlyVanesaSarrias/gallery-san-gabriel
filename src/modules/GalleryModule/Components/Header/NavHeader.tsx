@@ -14,16 +14,16 @@ const NavHeader = ({ navItems, subHeader = false }: NavHeaderProps) => {
     const location = useLocation();
     const ulClasses = classNames('flex gap-2  h-full items-center nav', {
         'text-white': !subHeader,
-        'text-black': subHeader,
+        'text-black text-xs sm:text-sm': subHeader,
     });
 
     const liActiveClasses = classNames({
         active: !subHeader,
-        'active-subheader text-blue-700': subHeader,
+        'active-subheader text-slate-700': subHeader,
     });
 
     const liClasses = classNames({
-        'hover:!bg-blue-600': !subHeader,
+        'hover:!bg-gray-700': !subHeader,
         'hover:!bg-gray-200': subHeader,
     });
 

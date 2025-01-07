@@ -21,11 +21,11 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
                 <div className="flex min-h-full items-center justify-center p-4">
                     <DialogPanel
                         transition
-                        className="w-auto h-[90vh] flex flex-col rounded-xl bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+                        className="w-auto h-auto md:h-[90vh] max-h-[90vh] flex flex-col rounded-xl bg-white p-4 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
                     >
                         <button
                             onClick={onClose}
-                            className="absolute right-4 top-4"
+                            className="absolute right-4 top-4 z-50"
                         >
                             <XMarkIcon className="size-5" />
                         </button>

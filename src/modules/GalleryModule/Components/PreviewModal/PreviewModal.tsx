@@ -1,5 +1,5 @@
 import { memo, useState, useEffect, useCallback, useRef } from 'react';
-import { Modal } from '../../../../ui-elments/components';
+import { Modal, Text } from '../../../../ui-elments/components';
 import {
     MagnifyingGlassPlusIcon,
     MagnifyingGlassMinusIcon,
@@ -8,17 +8,19 @@ import {
 interface PreviewModalProps {
     isOpen: boolean;
     onClose: () => void;
-    title?: string;
     type?: 'image' | 'video';
     url?: string;
+    imageUserUrl?: string;
+    userName: string;
 }
 
 const PreviewModal = ({
     isOpen,
-    title,
     onClose,
     type,
     url,
+    imageUserUrl,
+    userName,
 }: PreviewModalProps) => {
     const [isZoomed, setIsZoomed] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -83,8 +85,21 @@ const PreviewModal = ({
     }, [isZoomed, containerRect, handleMouseMove]);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title={title}>
+        <Modal isOpen={isOpen} onClose={onClose}>
             <div className="md:w-[800px] h-full w-full relative flex flex-col items-center justify-center overflow-hidden">
+                <div className="flex items-center gap-2 mb-2 w-full ">
+                    <img
+                        className="rounded-full size-12 bg-gray-300"
+                        src={
+                            imageUserUrl ||
+                            'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
+                        }
+                        alt="image user"
+                    />
+                    <Text size="md" weight="medium">
+                        {userName}
+                    </Text>
+                </div>
                 {type === 'image' && (
                     <div
                         className="relative flex items-center justify-center"

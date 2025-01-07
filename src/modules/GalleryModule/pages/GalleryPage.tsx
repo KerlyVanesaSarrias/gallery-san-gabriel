@@ -85,12 +85,12 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
 
     return (
         <div className="w-full h-full flex flex-col py-8 px-8 sm:px-14 md:px-16 gap-4">
-            {selectedMedia.length > 0 && (
+            {selectedMedia.length > 1 && (
                 <div className="flex gap-2 items-end">
                     <div className="w-28">
                         <Input
                             type="number"
-                            label="Speed in sg"
+                            label="Speed"
                             value={speedValue}
                             onChange={(e) => setSpeedValue(e.target.value)}
                         />
@@ -103,7 +103,7 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                 </div>
             )}
 
-            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-50">
+            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 bg-gray-50">
                 {media.map((item) => {
                     const { thumbnail, type, id } = item;
                     const isFavorite = user.myFavoritesMedia.some(
@@ -125,7 +125,8 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                 <PreviewModal
                     isOpen={isOpenPreview}
                     onClose={handleTogglePreviewModal()}
-                    title="Preview"
+                    imageUserUrl={mediaPreview?.userUrl}
+                    userName={mediaPreview?.userName ?? ''}
                     type={mediaPreview?.type}
                     url={mediaPreview?.url}
                 />
@@ -133,7 +134,7 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                     isOpen={isOpenPresentation}
                     onClose={handleTogglePresentationModal}
                     title="Presentation"
-                    items={selectedMedia.map((item) => ({
+                    items={selectedMedia?.map((item) => ({
                         type: item.type,
                         url: item.url,
                     }))}

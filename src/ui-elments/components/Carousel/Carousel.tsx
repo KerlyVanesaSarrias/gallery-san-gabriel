@@ -46,8 +46,8 @@ const Carousel = ({
     };
 
     return (
-        <div className="w-full px-6 py-4" id={id}>
-            <Slider {...settings} className="px-4">
+        <div className="w-full px-8 " id={id}>
+            <Slider {...settings} className="px-1">
                 {children
                     ? children
                     : images &&

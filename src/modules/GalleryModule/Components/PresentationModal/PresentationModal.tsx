@@ -6,7 +6,7 @@ interface PresentationModalProps {
     isOpen: boolean;
     onClose: () => void;
     title?: string;
-    items: Array<{
+    items?: Array<{
         type: 'image' | 'video';
         url: string;
     }>;
@@ -23,16 +23,17 @@ const PresentationModal = ({
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handleNext = useCallback(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
-    }, [items.length]);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % (items?.length ?? 0));
+    }, [items?.length]);
 
     const handlePrev = () => {
         setCurrentIndex(
-            (prevIndex) => (prevIndex - 1 + items.length) % items.length
+            (prevIndex) =>
+                (prevIndex - 1 + (items?.length ?? 0)) % (items?.length ?? 0)
         );
     };
 
-    const currentItem = items[currentIndex];
+    const currentItem = items ? items[currentIndex] : undefined;
 
     useEffect(() => {
         if (!isOpen) {
@@ -53,17 +54,17 @@ const PresentationModal = ({
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={title}>
             <div className="md:w-[800px] h-full w-full relative flex flex-col items-center justify-center overflow-hidden">
-                {items.length > 0 && (
-                    <div className="relative w-full h-full flex flex-col items-center">
+                {(items?.length ?? 0) > 0 && (
+                    <div className="relative flex items-center justify-center">
                         <div className="relative flex items-center justify-center w-full h-[500px] bg-gray-200 overflow-hidden">
-                            {currentItem.type === 'image' && (
+                            {currentItem?.type === 'image' && (
                                 <img
                                     src={currentItem.url}
                                     alt={'Presentation item'}
                                     className="object-contain h-full max-w-full"
                                 />
                             )}
-                            {currentItem.type === 'video' && (
+                            {currentItem?.type === 'video' && (
                                 <video
                                     src={currentItem.url}
                                     controls
@@ -73,30 +74,24 @@ const PresentationModal = ({
                             )}
                         </div>
 
-                        <div className="absolute top-1/2 transform -translate-y-1/2 left-4">
+                        <div className="absolute top-1/2 transform -translate-y-1/2 md:left-4 left-1">
                             <button
                                 onClick={handlePrev}
-                                className="bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700"
+                                className="bg-gray-800 text-white md:p-2 p-1 rounded-full shadow-lg hover:bg-gray-700"
                             >
-                                <ChevronLeftIcon className="h-6 w-6" />
+                                <ChevronLeftIcon className="md:h-6 md:w-6 h-4 w-4" />
                             </button>
                         </div>
 
-                        <div className="absolute top-1/2 transform -translate-y-1/2 right-4">
+                        <div className="absolute top-1/2 transform -translate-y-1/2 md:right-4  right-1">
                             <button
                                 onClick={handleNext}
-                                className="bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700"
+                                className="bg-gray-800 text-white md:p-2 p-1 rounded-full shadow-lg hover:bg-gray-700"
                             >
-                                <ChevronRightIcon className="h-6 w-6" />
+                                <ChevronRightIcon className="md:h-6 md:w-6 h-4 w-4" />
                             </button>
                         </div>
                     </div>
-                )}
-
-                {items.length === 0 && (
-                    <p className="text-center text-gray-500">
-                        No items to display
-                    </p>
                 )}
             </div>
         </Modal>

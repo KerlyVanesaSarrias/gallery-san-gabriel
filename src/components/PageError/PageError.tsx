@@ -1,17 +1,9 @@
 import image from '../../assets/images/image_error404.svg';
-import { Link } from 'react-router-dom';
-import { Text } from '../../ui-elments/components';
 
 const PageError = () => {
     return (
-        <div className="">
-            <div>
-                <img className="w-full" src={image} alt="404 Error" />
-            </div>
-            <div>
-                <Text color="error">Error</Text>
-                <Link to="/"></Link>
-            </div>
+        <div className="w-full h-full p-10 flex justify-center">
+            <img className="w-1/3" src={image} alt="404 Error" />
         </div>
     );
 };
