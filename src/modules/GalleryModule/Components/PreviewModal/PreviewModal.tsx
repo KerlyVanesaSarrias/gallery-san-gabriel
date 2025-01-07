@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useCallback } from 'react';
+import { memo, useState, useEffect, useCallback, useRef } from 'react';
 import { Modal } from '../../../../ui-elments/components';
 import {
     MagnifyingGlassPlusIcon,
@@ -23,6 +23,7 @@ const PreviewModal = ({
     const [isZoomed, setIsZoomed] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [containerRect, setContainerRect] = useState<DOMRect | null>(null);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
 
     useEffect(() => {
         if (!isOpen) {
@@ -30,6 +31,12 @@ const PreviewModal = ({
             setPosition({ x: 0, y: 0 });
         }
     }, [isOpen]);
+
+    useEffect(() => {
+        if (type === 'video' && isOpen && videoRef.current) {
+            videoRef.current.play();
+        }
+    }, [type, isOpen]);
 
     const handleZoomToggle = () => {
         setIsZoomed((prevZoom) => !prevZoom);
@@ -109,6 +116,25 @@ const PreviewModal = ({
                                 <MagnifyingGlassPlusIcon className="h-6 w-6" />
                             )}
                         </button>
+                    </div>
+                )}
+                {type === 'video' && (
+                    <div
+                        className="relative flex items-center justify-center"
+                        onMouseEnter={handleMouseEnter}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <video
+                            ref={videoRef}
+                            src={url}
+                            controls
+                            autoPlay
+                            className="w-full h-full"
+                        />
                     </div>
                 )}
             </div>

@@ -3,13 +3,26 @@ import { AppDispatch, RootState } from '../../../store';
 import { ThumbnailMedia } from '../../../ui-elments/components';
 import { MediaItem } from '../slices/GalerySlice/gallerySlice';
 import { userActions } from '../../AuthModule/slices/UserSlice/userSlice';
+import { useState } from 'react';
+import { PreviewModal } from '../Components';
 
 const FavoritesPage = () => {
     const { myFavoritesMedia } = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch<AppDispatch>();
+    const [isOpenPreview, setIsOpenPreview] = useState(false);
+    const [mediaPreview, setMediaPreview] = useState<MediaItem | null>(null);
 
     const handleFavoriteClick = (item: MediaItem) => (isFavorite: boolean) => {
         dispatch(userActions.setFavoritesMedia({ isFavorite, media: item }));
+    };
+
+    const handleTogglePreviewModal = (item?: MediaItem) => () => {
+        if (isOpenPreview === false && item) {
+            setMediaPreview(item);
+        } else {
+            setMediaPreview(null);
+        }
+        setIsOpenPreview(!isOpenPreview);
     };
 
     return (
@@ -24,9 +37,17 @@ const FavoritesPage = () => {
                         type={type}
                         onFavoriteClick={handleFavoriteClick(item)}
                         isFavorite
+                        onClick={handleTogglePreviewModal(item)}
                     />
                 );
             })}
+            <PreviewModal
+                isOpen={isOpenPreview}
+                onClose={handleTogglePreviewModal()}
+                title="Preview"
+                type={mediaPreview?.type}
+                url={mediaPreview?.url}
+            />
         </div>
     );
 };
