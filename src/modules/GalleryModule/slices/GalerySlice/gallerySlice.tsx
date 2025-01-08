@@ -120,6 +120,9 @@ const gallerySlice = createSlice({
                 );
             }
         },
+        clearSelectedMedia: (state) => {
+            state.selectedMedia = [];
+        },
     },
     extraReducers: (builder) => {
         builder

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import {
     fetchGallery,
     galleryActions,
@@ -9,7 +9,7 @@ import {
 } from '../slices/GalerySlice/gallerySlice';
 import { Button, Input, ThumbnailMedia } from '../../../ui-elments/components';
 import { Loader } from '../../../assets/images/Loader';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { userActions } from '../../AuthModule/slices/UserSlice/userSlice';
 import { PresentationModal, PreviewModal } from '../Components';
@@ -20,6 +20,7 @@ interface GalleryPageProps {
 }
 
 const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
+    const { pathname } = useLocation();
     const [isOpenPreview, setIsOpenPreview] = useState(false);
     const [isOpenPresentation, setIsOpenPresentation] = useState(false);
     const [mediaPreview, setMediaPreview] = useState<MediaItem | null>(null);
@@ -28,6 +29,15 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
     const { error, isLoading, media, selectedMedia } = useSelector(
         (state: RootState) => state.gallery
     );
+
+    const selectedMediaMemo = useMemo(() => {
+        return (
+            selectedMedia?.map((item) => ({
+                type: item.type,
+                url: item.url,
+            })) || []
+        );
+    }, [selectedMedia]);
 
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user);
@@ -69,6 +79,10 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
         dispatch(fetchGallery(category));
     }, [category, dispatch]);
 
+    useEffect(() => {
+        if (pathname) dispatch(galleryActions.clearSelectedMedia());
+    }, [dispatch, pathname]);
+
     if (isLoading) {
         return (
             <div className="w-full flex item-center justify-center pt-24">
@@ -90,7 +104,7 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                     <div className="w-28">
                         <Input
                             type="number"
-                            label="Speed"
+                            label="Speed in sec"
                             value={speedValue}
                             onChange={(e) => setSpeedValue(e.target.value)}
                         />
@@ -130,16 +144,15 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                     type={mediaPreview?.type}
                     url={mediaPreview?.url}
                 />
-                <PresentationModal
-                    isOpen={isOpenPresentation}
-                    onClose={handleTogglePresentationModal}
-                    title="Presentation"
-                    items={selectedMedia?.map((item) => ({
-                        type: item.type,
-                        url: item.url,
-                    }))}
-                    autoPlaySpeed={Number(speedValue) * 1000}
-                />
+                {selectedMediaMemo.length >= 2 && (
+                    <PresentationModal
+                        isOpen={isOpenPresentation}
+                        onClose={handleTogglePresentationModal}
+                        title="Presentation"
+                        items={selectedMediaMemo}
+                        autoPlaySpeed={Number(speedValue) * 1000}
+                    />
+                )}
             </div>
         </div>
     );

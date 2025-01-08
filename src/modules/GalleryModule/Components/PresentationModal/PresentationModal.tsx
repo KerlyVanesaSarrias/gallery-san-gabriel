@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Modal } from '../../../../ui-elments/components';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
@@ -6,7 +6,7 @@ interface PresentationModalProps {
     isOpen: boolean;
     onClose: () => void;
     title?: string;
-    items?: Array<{
+    items: Array<{
         type: 'image' | 'video';
         url: string;
     }>;
@@ -22,18 +22,22 @@ const PresentationModal = ({
 }: PresentationModalProps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    const itemsMemo = useMemo(() => {
+        return items;
+    }, [items]);
+
     const handleNext = useCallback(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % (items?.length ?? 0));
-    }, [items?.length]);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % itemsMemo.length);
+    }, [itemsMemo.length]);
 
     const handlePrev = () => {
         setCurrentIndex(
             (prevIndex) =>
-                (prevIndex - 1 + (items?.length ?? 0)) % (items?.length ?? 0)
+                (prevIndex - 1 + (itemsMemo?.length ?? 0)) % itemsMemo.length
         );
     };
 
-    const currentItem = items ? items[currentIndex] : undefined;
+    const currentItem = itemsMemo ? itemsMemo[currentIndex] : undefined;
 
     useEffect(() => {
         if (!isOpen) {
@@ -54,7 +58,7 @@ const PresentationModal = ({
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={title}>
             <div className="md:w-[800px] h-full w-full relative flex flex-col items-center justify-center overflow-hidden">
-                {(items?.length ?? 0) > 0 && (
+                {itemsMemo.length > 0 && (
                     <div className="relative flex items-center justify-center">
                         <div className="relative flex items-center justify-center w-full h-[500px] bg-gray-200 overflow-hidden">
                             {currentItem?.type === 'image' && (
@@ -98,4 +102,4 @@ const PresentationModal = ({
     );
 };
 
-export default memo(PresentationModal);
+export default PresentationModal;

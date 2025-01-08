@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from '../../../store';
 import { Button, Input, ThumbnailMedia } from '../../../ui-elments/components';
 import { galleryActions, MediaItem } from '../slices/GalerySlice/gallerySlice';
 import { userActions } from '../../AuthModule/slices/UserSlice/userSlice';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { PresentationModal, PreviewModal } from '../Components';
 import { PlayIcon } from '@heroicons/react/16/solid';
 
@@ -15,6 +15,15 @@ const FavoritesPage = () => {
     const [isOpenPresentation, setIsOpenPresentation] = useState(false);
     const [speedValue, setSpeedValue] = useState('3');
     const [mediaPreview, setMediaPreview] = useState<MediaItem | null>(null);
+
+    const selectedMediaMemo = useMemo(() => {
+        return (
+            selectedMedia?.map((item) => ({
+                type: item.type,
+                url: item.url,
+            })) || []
+        );
+    }, [selectedMedia]);
 
     const handleFavoriteClick = (item: MediaItem) => (isFavorite: boolean) => {
         dispatch(userActions.setFavoritesMedia({ isFavorite, media: item }));
@@ -28,6 +37,7 @@ const FavoritesPage = () => {
         }
         setIsOpenPreview(!isOpenPreview);
     };
+
     const handleTogglePresentationModal = () => {
         setIsOpenPresentation(!isOpenPresentation);
     };
@@ -41,6 +51,12 @@ const FavoritesPage = () => {
                 })
             );
         };
+
+    useEffect(() => {
+        dispatch(galleryActions.clearSelectedMedia());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <div className="w-full h-full flex flex-col py-8 px-8 sm:px-14 md:px-16 gap-4">
             {selectedMedia.length > 1 && (
@@ -48,7 +64,7 @@ const FavoritesPage = () => {
                     <div className="w-28">
                         <Input
                             type="number"
-                            label="Speed"
+                            label="Speed in sec"
                             value={speedValue}
                             onChange={(e) => setSpeedValue(e.target.value)}
                         />
@@ -84,16 +100,15 @@ const FavoritesPage = () => {
                     type={mediaPreview?.type}
                     url={mediaPreview?.url}
                 />
-                <PresentationModal
-                    isOpen={isOpenPresentation}
-                    onClose={handleTogglePresentationModal}
-                    title="Presentation"
-                    items={selectedMedia?.map((item) => ({
-                        type: item.type,
-                        url: item.url,
-                    }))}
-                    autoPlaySpeed={Number(speedValue) * 1000}
-                />
+                {selectedMediaMemo.length >= 2 && (
+                    <PresentationModal
+                        isOpen={isOpenPresentation}
+                        onClose={handleTogglePresentationModal}
+                        title="Presentation"
+                        items={selectedMediaMemo}
+                        autoPlaySpeed={Number(speedValue) * 1000}
+                    />
+                )}
             </div>
         </div>
     );
