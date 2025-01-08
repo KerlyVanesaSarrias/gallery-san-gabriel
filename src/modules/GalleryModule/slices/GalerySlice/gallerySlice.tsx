@@ -123,6 +123,9 @@ const gallerySlice = createSlice({
         clearSelectedMedia: (state) => {
             state.selectedMedia = [];
         },
+        selectAllMedia: (state) => {
+            state.selectedMedia = state.media;
+        },
     },
     extraReducers: (builder) => {
         builder

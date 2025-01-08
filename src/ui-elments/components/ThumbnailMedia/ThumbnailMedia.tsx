@@ -12,12 +12,14 @@ interface ThumbnailMediaProps {
     onFavoriteClick: (isFavorite: boolean) => void;
     onClick?: () => void;
     onCheckboxChange: (isChecked: boolean) => void;
+    isChecked?: boolean;
 }
 
 const ThumbnailMedia = ({
     thumbnail,
     type,
     isFavorite = false,
+    isChecked,
     onFavoriteClick,
     onClick,
     onCheckboxChange,
@@ -40,6 +42,7 @@ const ThumbnailMedia = ({
             >
                 <Checkbox
                     onChange={handleCheckboxChange}
+                    checked={isChecked}
                     onClick={(e) => {
                         e.stopPropagation();
                     }}

@@ -34,6 +34,7 @@ const Button: React.FC<ButtonProps> = ({
             [`button-color--${color}`]: true,
             [`button-size--${size}`]: true,
             'w-fit': !isFullWidth,
+            'cursor-not-allowed !opacity-50': disabled,
         },
         className
     );

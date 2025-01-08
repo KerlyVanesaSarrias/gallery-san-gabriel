@@ -75,6 +75,14 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
         dispatch(userActions.setFavoritesMedia({ isFavorite, media: item }));
     };
 
+    const handleSelectAllClick = () => {
+        dispatch(galleryActions.selectAllMedia());
+    };
+
+    const handleUnselectAll = () => {
+        dispatch(galleryActions.clearSelectedMedia());
+    };
+
     useEffect(() => {
         dispatch(fetchGallery(category));
     }, [category, dispatch]);
@@ -99,6 +107,21 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
 
     return (
         <div className="w-full h-full flex flex-col py-8 px-8 sm:px-14 md:px-16 gap-4">
+            <div className="flex gap-2">
+                <Button
+                    size="small"
+                    color="secondary"
+                    label="Select All"
+                    onClick={handleSelectAllClick}
+                />
+                <Button
+                    size="small"
+                    color="tertiary"
+                    label="Unselect All"
+                    onClick={handleUnselectAll}
+                    disabled={selectedMedia.length === 0}
+                />
+            </div>
             {selectedMedia.length > 1 && (
                 <div className="flex gap-2 items-end">
                     <div className="w-28">
@@ -124,6 +147,10 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                         (item) => item.id === id
                     );
 
+                    const isChecked = selectedMedia.some(
+                        (item) => item.id === id
+                    );
+
                     return (
                         <ThumbnailMedia
                             key={id}
@@ -132,6 +159,7 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                             onFavoriteClick={handleFavoriteClick(item)}
                             onCheckboxChange={handleCheckboxChange(item)}
                             isFavorite={isFavorite}
+                            isChecked={isChecked}
                             onClick={handleTogglePreviewModal(item)}
                         />
                     );
