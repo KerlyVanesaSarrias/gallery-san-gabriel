@@ -32,12 +32,12 @@ const GalleryModuleRouter = () => {
                         path={GALLERY_CATEGORIES_PATHS.food}
                         element={<GalleryPage category="food" />}
                     />
-                    <Route path="*" element={<PageError />} />
                 </Route>
                 <Route
                     path="/favorites"
                     element={<ProtectedRoute component={<FavoritesPage />} />}
                 />
+                <Route path="*" element={<PageError />} />
             </Route>
         </Routes>
     );

@@ -122,23 +122,23 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                     disabled={selectedMedia.length === 0}
                 />
             </div>
-            {selectedMedia.length > 1 && (
-                <div className="flex gap-2 items-end">
-                    <div className="w-28">
-                        <Input
-                            type="number"
-                            label="Speed in sec"
-                            value={speedValue}
-                            onChange={(e) => setSpeedValue(e.target.value)}
-                        />
-                    </div>
-                    <Button
-                        iconLeft={<PlayIcon className="size-6" />}
-                        label="Presentation"
-                        onClick={handleTogglePresentationModal}
+
+            <div className="flex gap-2 items-end">
+                <div className="w-28">
+                    <Input
+                        type="number"
+                        label="Speed in sec"
+                        value={speedValue}
+                        onChange={(e) => setSpeedValue(e.target.value)}
                     />
                 </div>
-            )}
+                <Button
+                    iconLeft={<PlayIcon className="size-6" />}
+                    label="Presentation"
+                    onClick={handleTogglePresentationModal}
+                    disabled={selectedMedia.length === 1}
+                />
+            </div>
 
             <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 bg-gray-50">
                 {media.map((item) => {

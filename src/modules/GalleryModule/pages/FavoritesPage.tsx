@@ -1,11 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
-import { Button, Input, ThumbnailMedia } from '../../../ui-elments/components';
+import {
+    Button,
+    Input,
+    Text,
+    ThumbnailMedia,
+} from '../../../ui-elments/components';
 import { galleryActions, MediaItem } from '../slices/GalerySlice/gallerySlice';
 import { userActions } from '../../AuthModule/slices/UserSlice/userSlice';
 import { useEffect, useMemo, useState } from 'react';
 import { PresentationModal, PreviewModal } from '../Components';
 import { PlayIcon } from '@heroicons/react/16/solid';
+import { Link } from 'react-router-dom';
 
 const FavoritesPage = () => {
     const { myFavoritesMedia } = useSelector((state: RootState) => state.user);
@@ -58,7 +64,7 @@ const FavoritesPage = () => {
     }, []);
 
     return (
-        <div className="w-full h-full flex flex-col py-8 px-8 sm:px-14 md:px-16 gap-4">
+        <div className="w-full h-full flex flex-col py-8 px-8 sm:px-14 md:px-16 gap-4 bg-gray-50">
             {selectedMedia.length > 1 && (
                 <div className="flex gap-2 items-end">
                     <div className="w-28">
@@ -74,6 +80,14 @@ const FavoritesPage = () => {
                         label="Presentation"
                         onClick={handleTogglePresentationModal}
                     />
+                </div>
+            )}
+            {myFavoritesMedia.length === 0 && (
+                <div className="flex flex-col gap-2 w-full justify-center items-center pt-10">
+                    <Text>There are no favorites here yet</Text>
+                    <Link to="/gallery">
+                        <Button label="Go to Gallery" />
+                    </Link>
                 </div>
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 bg-gray-50">
