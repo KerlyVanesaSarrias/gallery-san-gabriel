@@ -136,7 +136,7 @@ const GalleryPage = ({ category = 'all' }: GalleryPageProps) => {
                     iconLeft={<PlayIcon className="size-6" />}
                     label="Presentation"
                     onClick={handleTogglePresentationModal}
-                    disabled={selectedMedia.length === 1}
+                    disabled={selectedMedia.length < 2}
                 />
             </div>
 
